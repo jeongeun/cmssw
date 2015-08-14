@@ -14,7 +14,6 @@ RecoLocalTrackerRECO = cms.PSet(
     outputCommands = cms.untracked.vstring(
     'keep DetIdedmEDCollection_siStripDigis_*_*',
     'keep DetIdedmEDCollection_siPixelDigis_*_*',
-    'keep DetIdedmEDCollection_siPixelDigis_UserErrorModules_*',
     'keep *_siPixelClusters_*_*', 
     'keep *_siStripClusters_*_*',
     'keep ClusterSummary_clusterSummaryProducer_*_*')
