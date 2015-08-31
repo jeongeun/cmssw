@@ -16,19 +16,19 @@ l2NoBPTXmuon_moduleName = "hltL2fL1sMuOpenNotBptxORL1f0NoVtxCosmicSeedMeanTimerL
 electron_pathName = "HLT_Ele23_WPLoose_Gsf"
 electron_moduleName = "hltEle23WPLooseGsfTrackIsoFilter"
 
-caloMet_pathName = "HLT_MET75_IsoTrk50"
-caloMet_moduleName = "hltMETClean75"
+caloMet_pathName = "HLT_MET60_IsoTrk35_Loose"
+caloMet_moduleName = "hltMET60"
 
 pfMet_pathName = "HLT_PFMET120_PFMHT120_IDTight"
 pfMet_moduleName = "hltPFMET120"
 
-jetAk8_pathName = "HLT_AK8PFJet360TrimMod_Mass30"
+jetAk8_pathName = "HLT_AK8PFJet360_TrimMass30"
 jetAk8_moduleName = "hltAK8SinglePFJet360TrimModMass30"
 
 rsq_mr_pathName = "HLT_RsqMR240_Rsq0p09_MR200"
 rsq_mr_moduleName = "hltRsqMR240Rsq0p09MR200"
 
-bJet_pathNameCalo = "HLT_PFMET120_NoiseCleaned_BTagCSV0p72"
+bJet_pathNameCalo = "HLT_PFMET120_JetIdCleaned_BTagCSV0p72"
 bJet_moduleNameCalo = "hltBLifetimeL3FilterCSVsusy"
 bJet_pathNamePF = "HLT_QuadPFJet_SingleBTagCSV_VBF_Mqq500"
 bJet_moduleNamePF = "hltCSVPF0p78"
@@ -298,8 +298,8 @@ hltObjectMonitor = cms.EDAnalyzer('HLTObjectMonitor',
         Xmax = cms.double(2000)
         ),
     pfHtPt = cms.PSet(
-        pathName = cms.string("HLT_PFHT750_4Jet"),
-        moduleName = cms.string("hltPF4JetHT750"),
+        pathName = cms.string("HLT_PFHT750_4JetPt50"),
+        moduleName = cms.string("hltPF4JetPt50HT750"),
         plotLabel = cms.string("PFHT_pT"),
         axisLabel = cms.string("PF HT p_{T} [GeV]"),
         mainWorkspace = cms.bool(True),
