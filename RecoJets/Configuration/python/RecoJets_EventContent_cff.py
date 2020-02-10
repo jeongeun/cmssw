@@ -94,12 +94,16 @@ RecoGenJetsRECO = cms.PSet(
     )
 #AOD content
 RecoJetsAOD = cms.PSet(
-    outputCommands = cms.untracked.vstring('keep *_ak4CaloJets_*_*',
+    outputCommands = cms.untracked.vstring('keep recoCaloJets_ak4CaloJets_*_*',
+                                           'keep *_ak4CaloJets_rho_*',
+                                           'keep *_ak4CaloJets_sigma_*',
                                            'keep *_ak4PFJetsCHS_*_*',
                                            'keep *_ak8PFJetsCHS_*_*',
                                            'keep *_ak8PFJetsCHSSoftDrop_*_*',
                                            'keep *_cmsTopTagPFJetsCHS_*_*',
-                                           'keep *_ak4PFJets_*_*',
+                                           'keep recoPFJets_ak4PFJets_*_*',
+                                           'keep *_ak4PFJets_rho_*',
+                                           'keep *_ak4PFJets_sigma_*',
                                            'keep *_JetPlusTrackZSPCorJetAntiKt4_*_*',    
                                            'keep *_caloTowers_*_*', 
                                            'keep *_CastorTowerReco_*_*',                                           
@@ -108,9 +112,13 @@ RecoJetsAOD = cms.PSet(
                                            'keep *_ak4JetTracksAssociatorExplicit_*_*',
                                            'keep *_ak4JetExtender_*_*', 
                                            'keep *_ak4JetID_*_*',
-                                           'keep *_ak5CastorJets_*_*',
+                                           'keep recoBasicJets_ak5CastorJets_*_*',
+                                           'keep *_ak5CastorJets_rho_*',
+                                           'keep *_ak5CastorJets_sigma_*',
                                            'keep *_ak5CastorJetID_*_*',
-                                           'keep *_ak7CastorJets_*_*',
+                                           'keep recoBasicJets_ak7CastorJets_*_*',
+                                           'keep *_ak7CastorJets_rho_*',
+                                           'keep *_ak7CastorJets_sigma_*',
                                            'keep *_ak7CastorJetID_*_*',
                                            #'keep *_fixedGridRho*_*_*',
                                            'keep *_fixedGridRhoAll_*_*',
@@ -121,8 +129,8 @@ RecoJetsAOD = cms.PSet(
                                            'keep *_fixedGridRhoFastjetCentralCalo_*_*',
                                            'keep *_fixedGridRhoFastjetCentralChargedPileUp_*_*',
                                            'keep *_fixedGridRhoFastjetCentralNeutral_*_*',
-                                           'drop doubles_*Jets_rhos_*',
-                                           'drop doubles_*Jets_sigmas_*',
+                                           #'drop doubles_*Jets_rhos_*',
+                                           #'drop doubles_*Jets_sigmas_*',
                                            'keep *_ak8PFJetsCHSSoftDropMass_*_*'                                 
                                            )
     )
