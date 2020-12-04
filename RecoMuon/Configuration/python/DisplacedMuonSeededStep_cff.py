@@ -14,36 +14,37 @@ muonSeededSeedsOutInDisplaced.fromVertex = cms.bool(False)
 #for displaced global muons
 import TrackingTools.KalmanUpdators.Chi2MeasurementEstimator_cfi
 muonSeededMeasurementEstimatorForOutInDisplaced = TrackingTools.KalmanUpdators.Chi2MeasurementEstimator_cfi.Chi2MeasurementEstimator.clone(
-    ComponentName = cms.string('muonSeededMeasurementEstimatorForOutInDisplaced'),
-    MaxChi2 = cms.double(30.0), ## was 30 ## TO BE TUNED
-    nSigma  = cms.double(3.),    ## was 3  ## TO BE TUNED 
+    ComponentName = 'muonSeededMeasurementEstimatorForOutInDisplaced',
+    MaxChi2 = 30.0, ## was 30 ## TO BE TUNED
+    nSigma  = 3.,    ## was 3  ## TO BE TUNED 
 )
 
 ###------------- TrajectoryFilter, defining selections on the trajectories while building them ----------------
 #for displaced global muons
 import RecoTracker.IterativeTracking.MuonSeededStep_cff
-muonSeededTrajectoryFilterForOutInDisplaced = RecoTracker.IterativeTracking.MuonSeededStep_cff.muonSeededTrajectoryFilterForInOut.clone()
-muonSeededTrajectoryFilterForOutInDisplaced.constantValueForLostHitsFractionFilter = 10 ## allow more lost hits
-muonSeededTrajectoryFilterForOutInDisplaced.minimumNumberOfHits = 5 ## allow more lost hits
+muonSeededTrajectoryFilterForOutInDisplaced = RecoTracker.IterativeTracking.MuonSeededStep_cff.muonSeededTrajectoryFilterForInOut.clone(
+    constantValueForLostHitsFractionFilter = 10, ## allow more lost hits
+    minimumNumberOfHits = 5 ## allow more lost hits
+)
 ###------------- TrajectoryBuilders ----------------
 #for displaced global muons
 muonSeededTrajectoryBuilderForOutInDisplaced = RecoTracker.CkfPattern.GroupedCkfTrajectoryBuilder_cfi.GroupedCkfTrajectoryBuilder.clone(
-    foundHitBonus = cms.double(1000.0),  
-    lostHitPenalty = cms.double(1.0),   
-    maxCand   = cms.int32(3),
-    estimator = cms.string('muonSeededMeasurementEstimatorForOutInDisplaced'),
+    foundHitBonus = 1000.0,
+    lostHitPenalty = 1.0,
+    maxCand   = 3,
+    estimator = 'muonSeededMeasurementEstimatorForOutInDisplaced',
     trajectoryFilter = cms.PSet(refToPSet_ = cms.string('muonSeededTrajectoryFilterForOutInDisplaced')),
     inOutTrajectoryFilter = cms.PSet(refToPSet_ = cms.string('muonSeededTrajectoryFilterForOutInDisplaced')), # not sure if it is used
-    minNrOfHitsForRebuild    = cms.int32(5),
-    requireSeedHitsInRebuild = cms.bool(True), 
-    keepOriginalIfRebuildFails = cms.bool(False), 
+    minNrOfHitsForRebuild    = 5,
+    requireSeedHitsInRebuild = True, 
+    keepOriginalIfRebuildFails = False, 
 )
 ######## TRACK CANDIDATE MAKERS
 #for displaced global muons
 muonSeededTrackCandidatesOutInDisplaced = RecoTracker.CkfPattern.CkfTrackCandidates_cfi.ckfTrackCandidates.clone(
-    src = cms.InputTag("muonSeededSeedsOutInDisplaced"),
+    src = "muonSeededSeedsOutInDisplaced",
     TrajectoryBuilderPSet = cms.PSet(refToPSet_ = cms.string("muonSeededTrajectoryBuilderForOutInDisplaced")),
-    TrajectoryCleaner = cms.string('muonSeededTrajectoryCleanerBySharedHits'),
+    TrajectoryCleaner = 'muonSeededTrajectoryCleanerBySharedHits',
     numHitsForSeedCleaner = cms.int32(50),
     onlyPixelHitsForSeedCleaner = cms.bool(False),
 )
@@ -51,15 +52,15 @@ muonSeededTrackCandidatesOutInDisplaced = RecoTracker.CkfPattern.CkfTrackCandida
 ######## TRACK PRODUCERS 
 #for displaced global muon
 muonSeededTracksOutInDisplaced = RecoTracker.TrackProducer.TrackProducer_cfi.TrackProducer.clone(
-    src = cms.InputTag("muonSeededTrackCandidatesOutInDisplaced"),
-    AlgorithmName = cms.string('muonSeededStepOutIn'),
-    Fitter = cms.string("muonSeededFittingSmootherWithOutliersRejectionAndRK"),
+    src = "muonSeededTrackCandidatesOutInDisplaced",
+    AlgorithmName = 'muonSeededStepOutIn',
+    Fitter = "muonSeededFittingSmootherWithOutliersRejectionAndRK",
 )
 
 #for displaced global muons
-muonSeededTracksOutInDisplacedClassifier = RecoTracker.IterativeTracking.MuonSeededStep_cff.muonSeededTracksOutInClassifier.clone()
-muonSeededTracksOutInDisplacedClassifier.src='muonSeededTracksOutInDisplaced'
-
+muonSeededTracksOutInDisplacedClassifier = RecoTracker.IterativeTracking.MuonSeededStep_cff.muonSeededTracksOutInClassifier.clone(
+    src='muonSeededTracksOutInDisplaced'
+)
 
 #for displaced global muons
 muonSeededStepCoreDisplacedTask = cms.Task(

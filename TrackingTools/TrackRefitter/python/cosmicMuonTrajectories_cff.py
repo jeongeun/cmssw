@@ -30,5 +30,6 @@ cosmicMuons = cms.EDProducer("TracksToTrajectories",
                                                                )
                                    )
 
-MuAlCosmics = cosmicMuons.clone()
-MuAlCosmics.Tracks = cms.InputTag("ALCARECOMuAlGlobalCosmics","StandAlone")
+MuAlCosmics = cosmicMuons.clone(
+    Tracks = "ALCARECOMuAlGlobalCosmics:StandAlone"
+)
