@@ -29,23 +29,10 @@ dedxHitInfo = cms.EDProducer("DeDxHitInfoProducer",
 import RecoTracker.DeDx.DeDxEstimatorProducer_cfi as _mod
 
 dedxHarmonic2 = _mod.DeDxEstimatorProducer.clone(
-    tracks                     = cms.InputTag("generalTracks"),
- 
-    estimator      = cms.string('generic'),
-    fraction       = cms.double(0.4),        #Used only if estimator='truncated'
-    exponent       = cms.double(-2.0),       #Used only if estimator='generic'
- 
-    UseStrip       = cms.bool(True),
-    UsePixel       = cms.bool(False),
-    ShapeTest      = cms.bool(True),
-    MeVperADCStrip = cms.double(3.61e-06*265),
-    MeVperADCPixel = cms.double(3.61e-06),
-
-    Reccord            = cms.string("SiStripDeDxMip_3D_Rcd"), #used only for discriminators : estimators='productDiscrim' or 'btagDiscrim' or 'smirnovDiscrim' or 'asmirnovDiscrim'
-    ProbabilityMode    = cms.string("Accumulation"),          #used only for discriminators : estimators='productDiscrim' or 'btagDiscrim' or 'smirnovDiscrim' or 'asmirnovDiscrim'
-
-    UseCalibration  = cms.bool(False),
-    calibrationPath = cms.string(""),
+    fraction           = 0.4,        #Used only if estimator='truncated'
+    exponent           = -2.0,       #Used only if estimator='generic'
+    Reccord            = "SiStripDeDxMip_3D_Rcd", #used only for discriminators : estimators='productDiscrim' or 'btagDiscrim' or 'smirnovDiscrim' or 'asmirnovDiscrim'
+    ProbabilityMode    = "Accumulation",          #used only for discriminators : estimators='productDiscrim' or 'btagDiscrim' or 'smirnovDiscrim' or 'asmirnovDiscrim'
 )
 
 from Configuration.Eras.Modifier_fastSim_cff import fastSim
