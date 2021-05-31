@@ -122,7 +122,7 @@ _convLayerPairsLayerList.extend(_convLayerPairsStripOnlyLayers)
 import RecoTracker.TkSeedingLayers.seedingLayersEDProducer_cfi as _mod
 
 convLayerPairs = _mod.seedingLayersEDProducer.clone( 
-                                layerList = cms.vstring(_convLayerPairsLayerList),
+                                layerList = _convLayerPairsLayerList,
                                 BPix = cms.PSet(
                                     TTRHBuilder = cms.string('WithTrackAngle'),
                                     HitProducer = cms.string('siPixelRecHits'),
