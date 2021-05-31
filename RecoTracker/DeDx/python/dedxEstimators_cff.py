@@ -26,8 +26,10 @@ dedxHitInfo = cms.EDProducer("DeDxHitInfoProducer",
     lowPtTracksDeDxThreshold = cms.double(3.5), # threshold on tracks
 )
 
-dedxHarmonic2 = cms.EDProducer("DeDxEstimatorProducer",
-    tracks                     = cms.InputTag("generalTracks"),
+import RecoTracker.DeDx.DeDxEstimatorProducer_cfi as _mod
+
+dedxHarmonic2 = _mod.DeDxEstimatorProducer.clone(
+    tracks         = cms.InputTag("generalTracks"),
  
     estimator      = cms.string('generic'),
     fraction       = cms.double(0.4),        #Used only if estimator='truncated'

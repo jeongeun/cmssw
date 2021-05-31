@@ -118,10 +118,10 @@ _convLayerPairsLayerList =['BPix1+BPix2',
                            'BPix3+TIB1', 
                            'BPix3+TIB2']
 _convLayerPairsLayerList.extend(_convLayerPairsStripOnlyLayers)
-                                                        
-    
-             
-convLayerPairs = cms.EDProducer('SeedingLayersEDProducer',
+
+import RecoTracker.TkSeedingLayers.seedingLayersEDProducer_cfi as _mod
+
+convLayerPairs = _mod.seedingLayersEDProducer.clone( 
                                 layerList = cms.vstring(_convLayerPairsLayerList),
                                 BPix = cms.PSet(
                                     TTRHBuilder = cms.string('WithTrackAngle'),
