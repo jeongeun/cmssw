@@ -13,7 +13,9 @@ conv2Clusters = trackClusterRemover.clone(
     TrackQuality          = 'highPurity'
 )
 
-conv2LayerPairs = cms.EDProducer('SeedingLayersEDProducer',
+import RecoTracker.TkSeedingLayers.seedingLayersEDProducer_cfi as _mod
+
+conv2LayerPairs = _mod.seedingLayersEDProducer.clone(
                                 layerList = cms.vstring('BPix1+BPix2', 
 
                                                         'BPix2+BPix3', 
