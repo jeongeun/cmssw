@@ -336,13 +336,12 @@ std::ostream& EnergyScaleCorrection::SmearCorrection::print(std::ostream& os) co
   os << rho_ << " +/- " << rhoErr_ << "\t" << phi_ << " +/- " << phiErr_ << "\t" << eMean_ << " +/- " << eMeanErr_;
   return os;
 }
-
-//here be dragons
-//this function is nasty and needs to be replaced
+////For 2022 Scale Smearing json
+////updated by jeongeun 2024 Aug 15
 EnergyScaleCorrection::CorrectionCategory::CorrectionCategory(const std::string& category, int runnrMin, int runnrMax)
     : runMin_(runnrMin),
       runMax_(runnrMax),
-      etaMin_(0),
+      etaMin_(-3),
       etaMax_(3),
       r9Min_(-1),
       r9Max_(999),
@@ -351,84 +350,162 @@ EnergyScaleCorrection::CorrectionCategory::CorrectionCategory(const std::string&
       gain_(0) {
   size_t p1, p2;  // boundary
 
-  // eta region
-  p1 = category.find("absEta_");
-  if (category.find("absEta_0_1") != std::string::npos) {
-    etaMin_ = 0;
-    etaMax_ = 1;
-  } else if (category.find("absEta_1_1.4442") != std::string::npos) {
-    etaMin_ = 1;
-    etaMax_ = 1.479;
-  } else if (category.find("absEta_1.566_2") != std::string::npos) {
-    etaMin_ = 1.479;
-    etaMax_ = 2;
-  } else if (category.find("absEta_2_2.5") != std::string::npos) {
-    etaMin_ = 2;
+
+    // eta region
+  if (category.find("Eta_-10_-2.0") != std::string::npos) {
+    etaMin_ = -3;
+    etaMax_ = -2.0;
+  } else if (category.find("Eta_-2.0_-1.566") != std::string::npos) {
+    etaMin_ = -2.0;
+    etaMax_ = -1.566;
+  } else if (category.find("Eta_-1.566_-1.442") != std::string::npos) {
+    etaMin_ = -1.566;
+    etaMax_ = -1.442;
+  } else if (category.find("Eta_-1.442_-1.2") != std::string::npos) {
+    etaMin_ = -1.442;
+    etaMax_ = -1.2;
+  } else if (category.find("Eta_-1.2_-1.0") != std::string::npos) {
+    etaMin_ = -1.2;
+    etaMax_ = -1.0;
+  } else if (category.find("Eta_-1.0_0.0") != std::string::npos) {
+    etaMin_ = -1.0;
+    etaMax_ = 0.0;
+  } else if (category.find("Eta_0.0_1.0") != std::string::npos) {
+    etaMin_ = 0.0;
+    etaMax_ = 1.0;
+  } else if (category.find("Eta_1.0_1.2") != std::string::npos) {
+    etaMin_ = 1.0;
+    etaMax_ = 1.2;
+  } else if (category.find("Eta_1.2_1.442") != std::string::npos) {
+    etaMin_ = 1.2;
+    etaMax_ = 1.442;
+  } else if (category.find("Eta_1.442_1.566") != std::string::npos) {
+    etaMin_ = 1.442;
+    etaMax_ = 1.566;
+  } else if (category.find("Eta_1.566_2.0") != std::string::npos) {
+    etaMin_ = 1.566;
+    etaMax_ = 2.0;
+  } else if (category.find("Eta_2.0_10") != std::string::npos) {
+    etaMin_ = 2.0;
     etaMax_ = 3;
   } else {
-    if (p1 != std::string::npos) {
-      p1 = category.find('_', p1);
-      p2 = category.find('_', p1 + 1);
-      etaMin_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-      p1 = p2;
-      p2 = category.find('-', p1);
-      etaMax_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-    }
+    throw cms::Exception("EnergyScaleCorrection") << "Unrecognized Eta category: " << category;
   }
-
-  if (category.find("EBlowEta") != std::string::npos) {
-    etaMin_ = 0;
-    etaMax_ = 1;
-  };
-  if (category.find("EBhighEta") != std::string::npos) {
-    etaMin_ = 1;
-    etaMax_ = 1.479;
-  };
-  if (category.find("EElowEta") != std::string::npos) {
-    etaMin_ = 1.479;
-    etaMax_ = 2;
-  };
-  if (category.find("EEhighEta") != std::string::npos) {
-    etaMin_ = 2;
-    etaMax_ = 7;
-  };
-
-  // Et region
-  p1 = category.find("-Et_");
-
-  if (p1 != std::string::npos) {
-    p1 = category.find('_', p1);
-    p2 = category.find('_', p1 + 1);
-    etMin_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-    p1 = p2;
-    p2 = category.find('-', p1);
-    etMax_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-  }
-
-  if (category.find("gold") != std::string::npos || category.find("Gold") != std::string::npos ||
-      category.find("highR9") != std::string::npos) {
-    r9Min_ = 0.94;
-    r9Max_ = std::numeric_limits<float>::max();
-  } else if (category.find("bad") != std::string::npos || category.find("Bad") != std::string::npos ||
-             category.find("lowR9") != std::string::npos) {
-    r9Min_ = -1;
-    r9Max_ = 0.94;
-  };
+  //std::cout << "Parsed etaMin_: " << etaMin_ << ", etaMax_: " << etaMax_ << std::endl;
+// original
+////here be dragons
+////this function is nasty and needs to be replaced
+//EnergyScaleCorrection::CorrectionCategory::CorrectionCategory(const std::string& category, int runnrMin, int runnrMax)
+//    : runMin_(runnrMin),
+//      runMax_(runnrMax),
+//      etaMin_(0),
+//      etaMax_(3),
+//      r9Min_(-1),
+//      r9Max_(999),
+//      etMin_(0),
+//      etMax_(9999999),
+//      gain_(0) {
+//  size_t p1, p2;  // boundary
+//
+//  // eta region
+//  p1 = category.find("absEta_");
+//  if (category.find("absEta_0_1") != std::string::npos) {
+//    etaMin_ = 0;
+//    etaMax_ = 1;
+//  } else if (category.find("absEta_1_1.4442") != std::string::npos) {
+//    etaMin_ = 1;
+//    etaMax_ = 1.479;
+//  } else if (category.find("absEta_1.566_2") != std::string::npos) {
+//    etaMin_ = 1.479;
+//    etaMax_ = 2;
+//  } else if (category.find("absEta_2_2.5") != std::string::npos) {
+//    etaMin_ = 2;
+//    etaMax_ = 3;
+//  } else {
+//    if (p1 != std::string::npos) {
+//      p1 = category.find('_', p1);
+//      p2 = category.find('_', p1 + 1);
+//      etaMin_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//      p1 = p2;
+//      p2 = category.find('-', p1);
+//      etaMax_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//    }
+//  }
+//
+//  if (category.find("EBlowEta") != std::string::npos) {
+//    etaMin_ = 0;
+//    etaMax_ = 1;
+//  };
+//  if (category.find("EBhighEta") != std::string::npos) {
+//    etaMin_ = 1;
+//    etaMax_ = 1.479;
+//  };
+//  if (category.find("EElowEta") != std::string::npos) {
+//    etaMin_ = 1.479;
+//    etaMax_ = 2;
+//  };
+//  if (category.find("EEhighEta") != std::string::npos) {
+//    etaMin_ = 2;
+//    etaMax_ = 7;
+//  };
+//
+//  // Et region
+//  p1 = category.find("-Et_");
+//
+//  if (p1 != std::string::npos) {
+//    p1 = category.find('_', p1);
+//    p2 = category.find('_', p1 + 1);
+//    etMin_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//    p1 = p2;
+//    p2 = category.find('-', p1);
+//    etMax_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//  }
+//
+//  if (category.find("gold") != std::string::npos || category.find("Gold") != std::string::npos ||
+//      category.find("highR9") != std::string::npos) {
+//    r9Min_ = 0.94;
+//    r9Max_ = std::numeric_limits<float>::max();
+//  } else if (category.find("bad") != std::string::npos || category.find("Bad") != std::string::npos ||
+//             category.find("lowR9") != std::string::npos) {
+//    r9Min_ = -1;
+//    r9Max_ = 0.94;
+//  };
   // R9 region
-  p1 = category.find("-R9");
-  if (p1 != std::string::npos) {
-    p1 = category.find('_', p1);
-    p2 = category.find('_', p1 + 1);
-    r9Min_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-    // If there is one value, just set lower bound
-    if (p2 != std::string::npos) {
-      p1 = p2;
+  try {
+    p1 = category.find("R9_");
+    if (p1 != std::string::npos) {
+      p1 += 3;  // "R9_" 다음부터 시작
+      p2 = category.find('_', p1);
+      std::string r9MinStr = category.substr(p1, p2 - p1);
+      r9Min_ = std::stof(r9MinStr);  // r9Min을 추출
+
+      p1 = p2 + 1;
       p2 = category.find('-', p1);
-      r9Max_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
-      if (r9Max_ >= 1.0)
-        r9Max_ = std::numeric_limits<float>::max();
+      std::string r9MaxStr = category.substr(p1, p2 - p1);
+      r9Max_ = std::stof(r9MaxStr);  // r9Max를 추출
+
+      //std::cout << "Parsed r9Min_: " << r9Min_ << ", r9Max_: " << r9Max_ << std::endl;
     }
+  } catch (const std::exception& e) {
+    std::cerr << "Error parsing R9 values: " << e.what() << std::endl;
+    std::cerr << "Category string: " << category << std::endl;
+    throw;
   }
+//  // R9 region
+//  p1 = category.find("-R9");
+//  if (p1 != std::string::npos) {
+//    p1 = category.find('_', p1);
+//    p2 = category.find('_', p1 + 1);
+//    r9Min_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//    // If there is one value, just set lower bound
+//    if (p2 != std::string::npos) {
+//      p1 = p2;
+//      p2 = category.find('-', p1);
+//      r9Max_ = std::stof(category.substr(p1 + 1, p2 - p1 - 1));
+//      if (r9Max_ >= 1.0)
+//        r9Max_ = std::numeric_limits<float>::max();
+//    }
+//  }
   //------------------------------
   p1 = category.find("gainEle_");  // Position of first character
   if (p1 != std::string::npos) {

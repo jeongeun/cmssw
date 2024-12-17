@@ -87,6 +87,8 @@ public:
           runMax_(runnr),
           etaMin_(std::abs(eta)),
           etaMax_(std::abs(eta)),
+          //etaMin_(eta),
+          //etaMax_(eta),
           r9Min_(r9),
           r9Max_(r9),
           etMin_(et),
